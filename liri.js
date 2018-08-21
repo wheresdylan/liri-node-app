@@ -20,45 +20,45 @@ if (process.argv[2] === "spotify-this-song") {
         input = input + " " + process.argv[i];
     }
 
-
-    spotify.search({ type: 'track', query: input }, function (err, data) {
-        if (err) {
-            return console.log('Error occurred: ' + err);
-        }
-
-        console.log(data.tracks.items[0].album.external_urls.spotify);
-        console.log(data.tracks.items[0].album.name);
-        console.log(data.tracks.items[0].album.artists[0].name);
-        console.log(input.trim());
-    });
+    newSong(input);
 
 } else if (process.argv[2] === "movie-this") {
     for (var i = 3; i < process.argv.length; i++) {
         input = input + "+" + process.argv[i];
     }
 
-    request("http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
+    movie(input);
 
-        if (!error && response.statusCode === 200) {
-
-
-            console.log(JSON.parse(body).Title);
-            console.log(JSON.parse(body).Year);
-            console.log(JSON.parse(body).imdbRating);
-            console.log(JSON.parse(body).Ratings[1].Value);
-            console.log(JSON.parse(body).Country);
-            console.log(JSON.parse(body).Language);
-            console.log(JSON.parse(body).Plot);
-            console.log(JSON.parse(body).Actors);
-        }
-    });
 
 }else if (process.argv[2] === "concert-this") {
     for (var i = 3; i < process.argv.length; i++) {
         input = input + " " + process.argv[i];
     }
 
+    band(input);
 
+}else if (process.argv[2] === "do-what-it-says"){
+
+    fs.readFile("random.txt", "utf8", function (err, data) {
+        if (err) {
+            console.log(err);
+        }
+
+        var newArray = data.split(",")
+
+        if (newArray[0] === "spotify-this-song"){
+            newSong(newArray[1]);
+        }else if(newArray[0] === "movie-this"){
+            movie(newArray[1]);
+        }else if (newArray[0] === "concert-this"){
+            band(newArray[1]);
+        }
+
+    })
+
+}
+
+function band(input){
     bandsintown
   .getArtistEventList(input.trim())
   .then(function(events) {
@@ -77,15 +77,36 @@ if (process.argv[2] === "spotify-this-song") {
 
     console.log(moment(events[0].datetime).format('L'));
   });
-}else if (process.argv[2] === "do-what-it-says"){
+}
 
-    fs.readFile("random.txt", "utf8", function (err, data) {
+function movie(input){
+
+    request("http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
+
+        if (!error && response.statusCode === 200) {
+
+
+            console.log(JSON.parse(body).Title);
+            console.log(JSON.parse(body).Year);
+            console.log(JSON.parse(body).imdbRating);
+            console.log(JSON.parse(body).Ratings[1].Value);
+            console.log(JSON.parse(body).Country);
+            console.log(JSON.parse(body).Language);
+            console.log(JSON.parse(body).Plot);
+            console.log(JSON.parse(body).Actors);
+        }
+    });
+}
+
+function newSong(input){
+    spotify.search({ type: 'track', query: input }, function (err, data) {
         if (err) {
-            console.log(err);
+            return console.log('Error occurred: ' + err);
         }
 
-        console.log(data);
-
-    })
-
+        console.log(data.tracks.items[0].album.external_urls.spotify);
+        console.log(data.tracks.items[0].album.name);
+        console.log(data.tracks.items[0].album.artists[0].name);
+        console.log(input.trim());
+    });
 }
