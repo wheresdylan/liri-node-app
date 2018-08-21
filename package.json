@@ -1,0 +1,33 @@
+{
+  "name": "liri-node-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "node.js",
+  "dependencies": {
+    "bandsintown": "^1.0.1",
+    "dotenv": "^6.0.0",
+    "fs": "0.0.1-security",
+    "imdb-api": "^4.0.2",
+    "install": "^0.12.1",
+    "moment": "^2.22.2",
+    "node-spotify-api": "^1.0.7",
+    "npm": "^6.4.0",
+    "omdb": "^0.8.0",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wheresdylan/liri-node-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wheresdylan/liri-node-app/issues"
+  },
+  "homepage": "https://github.com/wheresdylan/liri-node-app#readme"
+}
